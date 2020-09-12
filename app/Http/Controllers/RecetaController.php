@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 
 class RecetaController extends Controller
 {
@@ -46,11 +47,9 @@ class RecetaController extends Controller
      */
     public function store(Request $request)
     {
-
         //probando save de image
         //dd( $request['imagen']->store('upload-recetas', 'aws'));
         //dd( $request['imagen']->store('upload-recetas', 'public'));
-
 
         //Validacion
         $data = $request->validate([
@@ -63,7 +62,9 @@ class RecetaController extends Controller
 
             //Obtener la ruta de la imagen
         $ruta_imagen =  $request['imagen']->store('upload-recetas', 'public');
-
+            //Resize de la imagen con intervention image composer require intervention/image
+        $img = Image::make(public_path("storage/{$ruta_imagen}"))-> fit(1000, 550);
+        $img->save();
 
         //Almacenar en la base de datos (SIN MODELO)
         DB::table('recetas')->insert([
