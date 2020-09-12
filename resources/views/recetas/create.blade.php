@@ -22,7 +22,9 @@
 
     <div class="row justify-content-center mt-5">
         <div class="col-md-8">
-            <form method="POST" action="{{ route('recetas.store') }} " novalidate>
+            <form method="POST" action="{{ route('recetas.store') }} " 
+            enctype="multipart/form-data"
+            novalidate>
                 @csrf
                 <div class="form-group">
                     <label for="titulo">Titulo Receta</label>
@@ -98,13 +100,34 @@
                             @error('ingredientes') is-invalid @enderror">
                         </trix-editor>
 
-                        @error('ingredientes')
+                    @error('ingredientes')
                         <span class="invalid-feedback d-block" role="alert">
                         <strong>{{$message}}</strong>
                         </span>   
                     @enderror
                 </div>
                 {{-- fin editor --}}
+
+
+
+                   {{-- Imagenes --}}
+                   <div class="form-group mt-3">
+                    <label for="imagen">Selecciona la Imagen</label>
+                    <input 
+                        id="imagen" 
+                        type="file" 
+                        class="form-control  @error('imagen') is-invalid @enderror"
+                        name="imagen"
+                    >
+
+                    @error('imagen')
+                        <span class="invalid-feedback d-block" role="alert">
+                        <strong>{{$message}}</strong>
+                        </span>   
+                    @enderror
+                   </div>
+                {{-- fin Imagenes --}}
+
 
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" value="Agregar Receta">

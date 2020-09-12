@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RecetaController extends Controller
@@ -46,15 +47,33 @@ class RecetaController extends Controller
     public function store(Request $request)
     {
 
+        //probando save de image
+        //dd( $request['imagen']->store('upload-recetas', 'aws'));
+        //dd( $request['imagen']->store('upload-recetas', 'public'));
+
+
+        //Validacion
         $data = $request->validate([
             'titulo'=> 'required|min:6',
-            'categoria'=>'required',
             'preparacion'=>'required',
             'ingredientes'=>'required',
-        ]);
+            'imagen'=>'required|image', //sixe:1000
+           'categoria'=>'required',
+           ]);
 
+            //Obtener la ruta de la imagen
+        $ruta_imagen =  $request['imagen']->store('upload-recetas', 'public');
+
+
+        //Almacenar en la base de datos (SIN MODELO)
         DB::table('recetas')->insert([
-            'titulo' => $data['titulo']
+            'titulo' => $data['titulo'],
+            'preparacion' => $data['preparacion'],
+            'ingredientes' => $data['ingredientes'],
+            'imagen' => $ruta_imagen,
+            'user_id' => Auth::user()->id,
+            'categoria_id' => $data['categoria'],
+
         ]);
         
        // dd( $request->all() );
