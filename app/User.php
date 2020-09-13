@@ -37,8 +37,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+<<<<<<< HEAD
     /** Relacion de 1:n de Usuario a Recetas */
     public function recetas(){
+=======
+      /** Relacion de 1:n de Usuario a Recetas */
+      public function recetas(){
+>>>>>>> develop
         return $this->hasMany(Receta::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CategoriaReceta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -21,8 +22,11 @@ class RecetaController extends Controller
      */
     public function index()
     {
-        //
-        return view('recetas.index');
+        //obtener recetas del usuario autenticado
+       // Auth::user()->recetas->dd(); ó auth()::users()
+       $recetas = auth()->user()->recetas;
+
+        return view('recetas.index')->with('recetas', $recetas);
     }
 
     /**
@@ -33,8 +37,12 @@ class RecetaController extends Controller
     public function create()
     {
 
-        //list
-        $categorias  = DB::table('categoria_receta')->get()->pluck('nombre','id');
+        //list OBTENER CATEGORIAS SIN MODELO
+        // $categorias  = DB::table('categoria_recetas')->get()->pluck('nombre','id');
+
+        //consulta de CATEGORIAS CON MODELO
+        $categorias = CategoriaReceta::all(['id','nombre']);
+
         //
         return view('recetas.create')->with('categorias', $categorias);
     }
@@ -67,15 +75,25 @@ class RecetaController extends Controller
         $img->save();
 
         //Almacenar en la base de datos (SIN MODELO)
-        DB::table('recetas')->insert([
-            'titulo' => $data['titulo'],
-            'preparacion' => $data['preparacion'],
-            'ingredientes' => $data['ingredientes'],
-            'imagen' => $ruta_imagen,
-            'user_id' => Auth::user()->id,
-            'categoria_id' => $data['categoria'],
+        // DB::table('recetas')->insert([
+        //     'titulo' => $data['titulo'],
+        //     'preparacion' => $data['preparacion'],
+        //     'ingredientes' => $data['ingredientes'],
+        //     'imagen' => $ruta_imagen,
+        //     'user_id' => Auth::user()->id,
+        //     'categoria_id' => $data['categoria'],
+        // ]);
 
-        ]);
+
+        //ALMACENAR EN LA BD CON MODELO / recetas el del modelo user
+            auth()->user()->recetas()->create([
+                'titulo' => $data['titulo'],
+                'preparacion' => $data['preparacion'],
+                'ingredientes' => $data['ingredientes'],
+                'imagen' => $ruta_imagen,
+                'categoria_id' => $data['categoria'],
+            ]);
+
         
        // dd( $request->all() );
        //REDIRECCIONA
