@@ -13,19 +13,19 @@ class CategoriasSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('categoria_receta')->insert([
+        DB::table('categoria_recetas')->insert([
             'nombre'=>'Carnes',
             'created_at'=>date('Y-m-d H:i:s'),
             'updated_At'=>date('Y-m-d H:i:s'),
 
         ]);
-        DB::table('categoria_receta')->insert([
+        DB::table('categoria_recetas')->insert([
             'nombre'=>'Hamburguesas',
             'created_at'=>date('Y-m-d H:i:s'),
             'updated_At'=>date('Y-m-d H:i:s'),
 
         ]);
-        DB::table('categoria_receta')->insert([
+        DB::table('categoria_recetas')->insert([
             'nombre'=>'Pizzas',
             'created_at'=>date('Y-m-d H:i:s'),
             'updated_At'=>date('Y-m-d H:i:s'),
