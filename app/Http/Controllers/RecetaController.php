@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Receta;
 use App\CategoriaReceta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -107,9 +108,9 @@ class RecetaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show(Receta $receta)
+    {   //algunos metodos para obtener una receta si viene asi show($id)   $receta = Receta::findOrFail($id);
+        return view('recetas.show', compact('receta'));
     }
 
     /**
